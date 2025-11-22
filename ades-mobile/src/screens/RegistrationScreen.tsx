@@ -168,7 +168,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 24,
     marginBottom: 20,
-    fontWeight: 'bold',
+    fontFamily: 'CustomFont-Bold',
   },
   input: {
     width: '100%',
@@ -179,6 +179,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     marginBottom: 10,
     backgroundColor: '#fff',
+    fontFamily: 'CustomFont-Regular',
   },
   button: {
     width: '100%',
@@ -192,7 +193,7 @@ const styles = StyleSheet.create({
   buttonText: {
     color: '#fff',
     fontSize: 18,
-    fontWeight: 'bold',
+    fontFamily: 'CustomFont-Bold',
   },
   imagePreview: {
     width: 100,
@@ -204,10 +205,12 @@ const styles = StyleSheet.create({
   errorText: {
     color: 'red',
     marginBottom: 10,
+    fontFamily: 'CustomFont-Regular',
   },
   linkText: {
     marginTop: 20,
     color: '#007bff',
+    fontFamily: 'CustomFont-Regular',
   },
 });
 

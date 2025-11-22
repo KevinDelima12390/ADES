@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { TextField, Button, Container, Typography, Box, Paper, Checkbox, FormControlLabel } from '@mui/material';
+import { TextField, Button, Container, Typography, Box, Paper } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import api from '../api/axios';
@@ -9,7 +9,6 @@ import { setCredentials } from '../auth/authSlice';
 const LoginPage: React.FC = () => {
   const [userId, setUserId] = useState('');
   const [password, setPassword] = useState('');
-  const [rememberMe, setRememberMe] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -24,13 +23,8 @@ const LoginPage: React.FC = () => {
 
       const { access_token } = response.data;
 
-      if (rememberMe) {
-        localStorage.setItem('jwtToken', access_token);
-        localStorage.setItem('userId', userId);
-      } else {
-        sessionStorage.setItem('jwtToken', access_token);
-        sessionStorage.setItem('userId', userId);
-      }
+      localStorage.setItem('jwtToken', access_token);
+      localStorage.setItem('userId', userId);
 
       dispatch(setCredentials({ token: access_token, userId }));
       toast.success('Login successful!');
@@ -78,10 +72,6 @@ const LoginPage: React.FC = () => {
               autoComplete="current-password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-            />
-            <FormControlLabel
-              control={<Checkbox value="remember" color="primary" checked={rememberMe} onChange={(e) => setRememberMe(e.target.checked)} />}
-              label="Remember me"
             />
             <Button
               type="submit"

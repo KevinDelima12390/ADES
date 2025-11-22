@@ -26,6 +26,7 @@ interface DashboardScreenProps {
 const DashboardScreen: React.FC<DashboardScreenProps> = ({ navigation }) => {
   const dispatch = useDispatch();
   const { userId } = useSelector((state: RootState) => state.auth);
+  const { isConnected, message } = useSelector((state: RootState) => state.websocket);
 
   const [holdProgress, setHoldProgress] = useState(0);
   const [isHolding, setIsHolding] = useState(false);
@@ -36,6 +37,30 @@ const DashboardScreen: React.FC<DashboardScreenProps> = ({ navigation }) => {
   const [longitude, setLongitude] = useState<number | null>(null);
   const [locationError, setLocationError] = useState<string | null>(null);
   const [isLocationLoading, setIsLocationLoading] = useState(false);
+
+  useEffect(() => {
+    if (message) {
+      try {
+        const parsedMessage = JSON.parse(message);
+        const alertMessage = parsedMessage.message || 'New alert received';
+        Toast.show({
+          type: 'info',
+          text1: 'Real-Time Alert',
+          text2: alertMessage,
+          visibilityTime: 5000,
+        });
+      } catch (e) {
+        // If message is not a JSON string, show it directly
+        Toast.show({
+          type: 'info',
+          text1: 'Real-Time Alert',
+          text2: message,
+          visibilityTime: 5000,
+        });
+      }
+    }
+  }, [message]);
+
 
   const getUserLocation = async () => {
     setIsLocationLoading(true);
@@ -173,6 +198,12 @@ const DashboardScreen: React.FC<DashboardScreenProps> = ({ navigation }) => {
       <TouchableOpacity style={[styles.navButton, styles.logoutButton]} onPress={handleLogout}>
         <Text style={styles.navButtonText}>Logout</Text>
       </TouchableOpacity>
+
+      <View style={styles.websocketStatusContainer}>
+        <Text style={styles.websocketStatusText}>
+          WebSocket: {isConnected ? 'Connected' : 'Disconnected'}
+        </Text>
+      </View>
     </View>
   );
 };
@@ -253,6 +284,17 @@ const styles = StyleSheet.create({
     color: 'white',
     fontSize: 18,
     fontWeight: 'bold',
+  },
+  websocketStatusContainer: {
+    position: 'absolute',
+    bottom: 10,
+    left: 10,
+    right: 10,
+    alignItems: 'center',
+  },
+  websocketStatusText: {
+    fontSize: 12,
+    color: '#888',
   },
 });
 

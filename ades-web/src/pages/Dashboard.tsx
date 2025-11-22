@@ -124,9 +124,7 @@ const Dashboard: React.FC = () => {
 
   const handleLogout = () => {
     localStorage.removeItem('jwtToken');
-    sessionStorage.removeItem('jwtToken');
     localStorage.removeItem('userId');
-    sessionStorage.removeItem('userId');
     dispatch(logout());
     toast.success('Logged out successfully.');
     navigate('/login');
